@@ -1,0 +1,76 @@
+
+Name: libntrm
+Version:      %{sourceversion}
+Release:        %{?dist}
+Summary:  C++ API classes to interface Qt4 applications to XMPP     
+
+Group:    System Environment/Libraries      
+License:        GPLv2
+URL:       http://code.google.com/p/qxmpp
+Source0:        %{name}-%{version}.tar.gz
+BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+
+#Provides: 
+
+BuildRequires:  gcc-c++
+Requires:       qt-x11
+
+%description
+A C Implementation of NTRUEncrypt
+
+
+%package -n %{mylibname}-devel
+Summary: Development interface for %{name}
+Group: Development/Libraries
+Requires: %{name} = %{version}-%{release}
+
+%description -n %{mylibname}-devel
+Headers for XMPP chat/messenger QT4 applications
+
+%prep
+%setup -q
+
+
+%build
+
+make %{?_smp_mflags}
+
+
+%install
+rm -rf $RPM_BUILD_ROOT
+make INSTALL_ROOT=$RPM_BUILD_ROOT LIBDIR=%{_libdir} install
+
+%files
+%defattr(-,root,root,-)
+%doc README README.%{smallname}-orig LICENSE
+%{_libdir}/%{mylibname}.so.%{libver}
+%files -n %{mylibname}-devel
+%defattr(-,root,root,-)
+%dir %{_includedir}/%{smallname}
+%{_includedir}/%{smallname}/*
+
+%clean
+rm -rf $RPM_BUILD_ROOT
+
+%post
+/sbin/ldconfig
+
+%post -n %{mylibname}-devel
+(cd %{_libdir};
+  ln -s -f %{mylibname}.so.%{libver}.0.0 \
+      %{mylibname}.so ;
+)
+/sbin/ldconfig
+
+%postun
+/sbin/ldconfig
+
+%postun -n %{mylibname}-devel
+(cd %{_libdir};
+  rm -f %{mylibname}.so ;
+)
+/sbin/ldconfig
+
+
+%changelog
+

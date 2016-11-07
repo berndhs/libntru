@@ -1,0 +1,54 @@
+* Mon Nov 07 2016 Bernd Stramm <bernd.stramm@gmail.com> - 0.5
+- First rpm packaging
+
+* Sat May 14 2016 Tim Buktu 0.5
+ - RNGs: NTRU_RNG_DEFAULT uses CTR_DRBG now, NTRU_RNG_CTR_DRBG replaces NTRU_RNG_IGF2
+   This change breaks the API!
+ - Denser encoding of private keys
+   This change breaks binary compatibility!
+ - new API feature: multiple public keys for the same private key
+ - new parameter sets: EES443EP1 and EES587EP1
+ - new #defines for referencing param sets by strength: NTRU_DEFAULT_PARAMS_xxx_BITS
+ - BSD support
+ - bugfixes:
+  o fixed deterministic encryption on big-endian machines
+  o fixed some incorrect error codes when key generation failed
+  o fixed generation of polynomial g which deviated from the standard
+  o fixed SSE detection on BSD
+  o fixed buffer overruns (thanks Jeffrey Quesnelle)
+  o fixed a resource leak
+  o fixed tests on ARMv6
+  o fixed calculation of M_len
+ - AVX2 optimizations (thanks Shay Gueron and Fabian Schlieker)
+ - minor optimizations
+
+* Wed May 11 2016 Tim Buktu 0.4.1
+ - Experimental support for OS/2 (thanks Elbert Pol)
+ - Fixed build when the CC environment variable is set
+ - Fixed a memory leak
+
+* Mon May 04 2015 Tim Buktu 0.4
+ - massive performance improvements
+ - new Makefile targets for distros (thanks Julian Ospald)
+ - made the library C++ friendly (thanks Ruben De Smet)
+ - new functions: ntru_params_from_key_pair() and ntru_params_from_priv_key()
+ - fixed a memory leak
+ - fixed parameter values
+ - fixed data-dependent branches
+
+* Fri Nov 14 2014 Tim Buktu 0.3
+ - option to exclude code that is patented beyond 2017
+ - RNG-related API changes for thread safety and closeability of OS handles
+ - several bugs fixed
+ - sample code for NTRU+AES encryption
+
+* Sun Mar 30 2014 Tim Buktu 0.2
+ - supports all EES parameter sets
+ - supports deterministic encryption and key generation
+ - works on Windows (MinGW)
+ - no longer depends on OpenSSL
+ - several bugs fixed
+ - performance improvements
+
+* Mon Mar 19 2012 Tim Buktu 0.1
+ - Initial release
