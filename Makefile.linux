@@ -88,20 +88,24 @@ install: install-lib install-doc install-headers
 install-lib: lib
 	test -d "$(DESTDIR)$(INST_LIBDIR)" || mkdir -p "$(DESTDIR)$(INST_LIBDIR)"
 	install -m 0755 libntru.so "$(DESTDIR)$(INST_LIBDIR)/libntru.so"
+	ls -l $(DESTDIR)$(INST_LIBDIR)/libntru.so
 
 install-static-lib: static-lib
 	test -d "$(DESTDIR)$(INST_LIBDIR)" || mkdir -p "$(DESTDIR)$(INST_LIBDIR)"
 	install -m 0755 libntru.a "$(DESTDIR)$(INST_LIBDIR)/libntru.a"
+	ls -l $(DESTDIR)$(INST_LIBDIR)/libntru.a
 
 install-doc:
 	test -d "$(DESTDIR)$(INST_DOCDIR)" || mkdir -p "$(DESTDIR)$(INST_DOCDIR)"
 	install -m 0644 README.md "$(DESTDIR)$(INST_DOCDIR)/README.md"
+	ls -l $(DESTDIR)$(INST_DOCDIR)/README.md
 
 install-headers:
 	test -d "$(DESTDIR)$(INST_INCLUDE)" || mkdir -p "$(DESTDIR)$(INST_INCLUDE)"
 	for header in $(INST_HEADERS) ; do \
 	    install -m 0644 "$(SRCDIR)/$$header" "$(DESTDIR)$(INST_INCLUDE)/" ; \
 	done
+	ls -l $(DESTDIR)$(INST_INCLUDE)/$(INST_HEADERS) 
 
 uninstall: uninstall-lib uninstall-doc uninstall-headers
 
