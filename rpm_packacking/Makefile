@@ -45,13 +45,22 @@ info:
 spec:	
 	make $(SPEC)
 
-$(SPEC):  spec.in pack-version FORCE
+$(SPEC):  spec.in pack-version pack-count
+	touch spec.old
+	if [ -e $(SPEC) ] ;\
+	then  \
+	  mv $(SPEC) spec.old ; \
+	else \
+	  touch spec.old ;\
+	fi
 	echo -n "%define sourceversion " > $(SPEC)
 	echo $(VERSION) >> $(SPEC)
 	echo -n "%define relcount " >> $(SPEC)
 	echo $(COUNT) >> $(SPEC)
 	cat spec.in >> $(SPEC)
 	cat $(CHANGES) >> $(SPEC)
+	-diff spec.old $(SPEC)
+	ls -l $(SPEC)
 
 $(SOURCEDIR)/$(TAR_SRC): $(TAR_SRC)
 	cp $(TAR_SRC) $(SOURCEDIR)/$(TAR_SRC)

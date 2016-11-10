@@ -1,76 +1,49 @@
 
-Name: libntrm
-Version:      %{sourceversion}
-Release:        %{?dist}
-Summary:  C++ API classes to interface Qt4 applications to XMPP     
-
-Group:    System Environment/Libraries      
-License:        GPLv2
-URL:       http://code.google.com/p/qxmpp
-Source0:        %{name}-%{version}.tar.gz
-BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
-
-#Provides: 
-
-BuildRequires:  gcc-c++
-Requires:       qt-x11
-
+Name:      libntru
+Version:   0.5
+Release:   1%{?dist}
+Summary:   A C Implementation of NTRUEncrypt
+ 
+License:   GPLv2
+URL:       http://github.com/berndhs/libntru
+Source0:   https://github.com/berndhs/%{name}/archive/%{version}.tar.gz#/%{name}-%{version}.tar.gz
+ 
+ 
 %description
 A C Implementation of NTRUEncrypt
-
-
-%package -n %{mylibname}-devel
+ 
+ 
+%package devel
 Summary: Development interface for %{name}
-Group: Development/Libraries
-Requires: %{name} = %{version}-%{release}
-
-%description -n %{mylibname}-devel
-Headers for XMPP chat/messenger QT4 applications
-
+Requires: %{name} = %{version}%{release}
+ 
+%description devel
+Headers for the C Implementation of NTRUEncrypt
+ 
 %prep
 %setup -q
-
-
+ 
 %build
-
-make %{?_smp_mflags}
-
-
+make
+ 
 %install
-rm -rf $RPM_BUILD_ROOT
-make INSTALL_ROOT=$RPM_BUILD_ROOT LIBDIR=%{_libdir} install
-
+echo "install to " %{_libdir} " and prefix " $RPM_BUILD_ROOT
+%dump
+make INST_PFX=$RPM_BUILD_ROOT LIBDIR=%{_libdir}64 install
+ln -s %{name}.so.${version}.0 $RPM_BUILD_ROOT/%{_libdir}/%{name}.so
+ 
 %files
-%defattr(-,root,root,-)
-%doc README README.%{smallname}-orig LICENSE
-%{_libdir}/%{mylibname}.so.%{libver}
-%files -n %{mylibname}-devel
-%defattr(-,root,root,-)
-%dir %{_includedir}/%{smallname}
-%{_includedir}/%{smallname}/*
-
-%clean
-rm -rf $RPM_BUILD_ROOT
-
-%post
-/sbin/ldconfig
-
-%post -n %{mylibname}-devel
-(cd %{_libdir};
-  ln -s -f %{mylibname}.so.%{libver}.0.0 \
-      %{mylibname}.so ;
-)
-/sbin/ldconfig
-
-%postun
-/sbin/ldconfig
-
-%postun -n %{mylibname}-devel
-(cd %{_libdir};
-  rm -f %{mylibname}.so ;
-)
-/sbin/ldconfig
-
+%license LICENSE
+%doc README.md
+%{_libdir}/%{name}.so.%{version}
+ 
+%files devel
+%{_libdir}/%{name}.so
+%{_includedir}/%{smallname}/
+ 
+%post -p /sbin/ldconfig
+ 
+%postun -p /sbin/ldconfig
 
 %changelog
 
