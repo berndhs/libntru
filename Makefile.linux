@@ -105,7 +105,6 @@ install-headers:
 	for header in $(INST_HEADERS) ; do \
 	    install -m 0644 "$(SRCDIR)/$$header" "$(DESTDIR)$(INST_INCLUDE)/" ; \
 	done
-	ls -l $(DESTDIR)$(INST_INCLUDE)/$(INST_HEADERS) 
 
 uninstall: uninstall-lib uninstall-doc uninstall-headers
 
